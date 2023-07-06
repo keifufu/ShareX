@@ -1339,7 +1339,20 @@ namespace ShareX.ScreenCaptureLib
         {
             if (Windows != null)
             {
-                return Windows.FirstOrDefault(x => x.Rectangle.Contains(InputManager.MousePosition));
+                var win = Windows.FirstOrDefault(x =>
+                {
+                    if (!x.Rectangle.Contains(InputManager.MousePosition))
+                        return false;
+
+                    if (x.WindowInfo != null && !string.IsNullOrEmpty(x.WindowInfo.Text))
+                    {
+                        if (x.WindowInfo.Text.Contains("@ignore", StringComparison.InvariantCultureIgnoreCase))
+                            return false;
+                    }
+
+                    return true;
+                });
+                return win;
             }
 
             return null;
@@ -1349,12 +1362,22 @@ namespace ShareX.ScreenCaptureLib
         {
             if (Windows != null)
             {
-                SimpleWindowInfo windowInfo = Windows.FirstOrDefault(x => x.IsWindow && x.Rectangle.Contains(position));
+                SimpleWindowInfo windowInfo = Windows.FirstOrDefault(x =>
+                {
+                    if (!x.Rectangle.Contains(InputManager.MousePosition))
+                        return false;
+
+                    if (x.WindowInfo != null && !string.IsNullOrEmpty(x.WindowInfo.Text))
+                    {
+                        if (x.WindowInfo.Text.Contains("@ignore", StringComparison.InvariantCultureIgnoreCase))
+                            return false;
+                    }
+
+                    return true;
+                });
 
                 if (windowInfo != null)
-                {
                     return windowInfo.WindowInfo;
-                }
             }
 
             return null;
