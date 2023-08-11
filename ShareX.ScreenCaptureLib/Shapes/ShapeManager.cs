@@ -1348,6 +1348,8 @@ namespace ShareX.ScreenCaptureLib
                     {
                         if (x.WindowInfo.Text.Contains("@ignore", StringComparison.InvariantCultureIgnoreCase))
                             return false;
+                        else if (x.WindowInfo.ProcessName.Contains("FancyWM", StringComparison.InvariantCultureIgnoreCase))
+                            return false;
                     }
 
                     return true;
@@ -1370,6 +1372,8 @@ namespace ShareX.ScreenCaptureLib
                     if (x.WindowInfo != null && !string.IsNullOrEmpty(x.WindowInfo.Text))
                     {
                         if (x.WindowInfo.Text.Contains("@ignore", StringComparison.InvariantCultureIgnoreCase))
+                            return false;
+                        else if (x.WindowInfo.ProcessName.Contains("FancyWM", StringComparison.InvariantCultureIgnoreCase))
                             return false;
                     }
 
